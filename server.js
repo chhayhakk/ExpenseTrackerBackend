@@ -74,7 +74,7 @@ app.post('/refresh-token', (req, res) => {
     return res.status(401).json({ error: 'No refresh token provided' });
   }
 
-  console.log("Received Refresh Token:", refreshToken);
+  // console.log("Received Refresh Token:", refreshToken);
 
   jwt.verify(refreshToken, process.env.JWT_SECRET, (err, user) => {
     if (err) {
@@ -84,7 +84,7 @@ app.post('/refresh-token', (req, res) => {
       return res.status(403).json({ error: 'Invalid or expired refresh token' });
     }
 
-    console.log("User after token verification:", user);
+    // console.log("User after token verification:", user);
 
     const newAccessToken = jwt.sign(
       { id: user.id, username: user.username },
