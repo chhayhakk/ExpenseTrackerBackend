@@ -49,11 +49,11 @@ app.post('/login', (req, res)=>{
       return res.status(400).json( {error: 'Invalid credentials'});
     }
 
-    const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '7d' });
     const refreshToken = jwt.sign(
       { id: user.id, username: user.username },
       process.env.JWT_SECRET,
-      { expiresIn: '2h' } 
+      { expiresIn: '30d' } 
     );
     res.json({ token, refreshToken });
     })
@@ -74,7 +74,7 @@ app.post('/refresh-token', (req, res) => {
     return res.status(401).json({ error: 'No refresh token provided' });
   }
 
-  console.log("Received Refresh Token:", refreshToken); // Log the refresh token
+  console.log("Received Refresh Token:", refreshToken);
 
   jwt.verify(refreshToken, process.env.JWT_SECRET, (err, user) => {
     if (err) {
@@ -89,13 +89,13 @@ app.post('/refresh-token', (req, res) => {
     const newAccessToken = jwt.sign(
       { id: user.id, username: user.username },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '7d' }
     );
 
     const newRefreshToken = jwt.sign(
       { id: user.id, username: user.username },
       process.env.JWT_SECRET,
-      { expiresIn: '2h' }
+      { expiresIn: '30d' }
     );
 
     res.json({ token: newAccessToken, refreshToken: newRefreshToken });
